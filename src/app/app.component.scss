@@ -1,0 +1,82 @@
+
+.example-container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  .example-spacer {
+    flex: 1 1 auto;
+  }
+  .toolimg {
+    width: 55px;
+    height: 55px;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+  .username {
+    display: flex;
+    align-items: center;
+    font-size: medium;
+    font-weight: 300;
+  }
+  
+  .username span {
+    cursor: pointer;
+  }
+  .defaultp {
+    padding: 60px 0px 0px 0px !important;
+  }
+  mat-form-field {
+    margin-right: 12px;
+    padding: 8px;
+    width: 100%;
+  }
+  .snackbar {
+    background: #e72806;
+    color: #ffff;
+  }
+  .snackbar-success {
+    background: #2e7f20;
+    color: #ffff;
+  }
+  @media (max-width: 767px) {
+    .hidden-mobile {
+      display: none;
+    }
+    .username{
+      font-size: x-small;
+    }
+    .show{
+      display: contents;
+    }
+  }
+  .show{
+    display: none;
+  }
+  
+  
+ 
+  .secodtoolbar{
+    height: 5px;
+    p{
+    font-size: small;
+  
+    }
+  }
+
+
+
+
+  .footer {
+    color: #034f84;
+    text-align: center;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    z-index: 100;
+    font-size: small;
+  }
+  

@@ -1,0 +1,59 @@
+<div class="container d-flex justify-content-center align-items-center vh-100">
+  <div class="card p-4 shadow-lg w-50">
+    <h2 class="text-center text-primary fw-bold">Disaster Relief Camp Management</h2>
+    <h4 class="text-center text-secondary">Add Camp Admin</h4>
+    <form (submit)="onSubmit()">
+      
+      <!-- Name -->
+      <div class="mb-3">
+        <label class="form-label">Name</label>
+        <input type="text" class="form-control" [(ngModel)]="name" name="name" required />
+      </div>
+
+      <!-- Email -->
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-control" [(ngModel)]="email" name="email" required />
+      </div>
+
+      <!-- Phone Number -->
+      <div class="mb-3">
+        <label class="form-label">Phone Number</label>
+        <input type="tel" class="form-control" [(ngModel)]="phoneNumber" name="phoneNumber" required />
+      </div>
+
+      <!-- Address -->
+      <div class="mb-3">
+        <label class="form-label">Address</label>
+        <textarea class="form-control" [(ngModel)]="address" name="address" required></textarea>
+      </div>
+
+      <!-- Password -->
+      <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-control" [(ngModel)]="password" name="password" required />
+      </div>
+
+      <!-- Select Camp -->
+      <div class="mb-3">
+        <label class="form-label">Select Camp</label>
+        <select class="form-select" [(ngModel)]="selectedCampId" name="campId" required>
+          <option *ngFor="let camp of camps" [value]="camp.id">
+            {{ camp.name }} ({{ camp.location }})
+          </option>
+        </select>
+      </div>
+
+      <!-- Error Message -->
+      <div *ngIf="errorMessage" class="text-danger text-center">
+        <p>{{ errorMessage }}</p>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="text-center">
+        <button class="btn btn-primary w-100" type="submit">Register</button>
+      </div>
+      
+    </form>
+  </div>
+</div>

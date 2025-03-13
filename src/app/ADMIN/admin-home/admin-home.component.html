@@ -1,0 +1,180 @@
+<div class="container mt-5">
+    <div class="row">
+      <div class="col-12 text-center">
+        <h2>Welcome to the Disaster Relief Camp</h2>
+        <p><strong>{{ user?.email }}</strong></p>
+      </div>
+    </div>
+  
+    <!-- Bootstrap Tabs -->
+    <ul class="nav nav-tabs mt-4" id="adminTabs">
+      <li class="nav-item">
+        <a class="nav-link active" data-bs-toggle="tab" href="#dashboard">Dashboard</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#users">User Management</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#requests">Service Requests</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#resources">Resources & Inventory</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#health">Health & Medical</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#camp">Camp Management</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#reports">Reports & Analytics</a>
+      </li>
+    </ul>
+  
+    <!-- Tab Content -->
+    <div class="tab-content mt-3">
+      <!-- Dashboard -->
+      <div class="tab-pane fade show active" id="dashboard">
+        <div class="row">
+          <!-- Send Message to All Camps -->
+          <div class="col-md-12 mb-4">
+            <div class="card">
+              <div class="card-header">Send Message to All Camps</div>
+              <div class="card-body">
+                <mat-form-field class="w-100">
+                  <mat-label>Message</mat-label>
+                  <textarea matInput [(ngModel)]="campMessage" name="campMessage" rows="3"></textarea>
+                </mat-form-field>
+                <button mat-raised-button color="primary" class="mt-2" (click)="sendMessageToAllCamps()">Send Message</button>
+              </div>
+            </div>
+          </div>
+      
+          <!-- Display All Camps and Their Status -->
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header">All Camps Status</div>
+              <div class="card-body">
+                <div *ngIf="camps.length > 0; else noCamps">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>Camp Name</th>
+                        <th>Location</th>
+                        <th>CampCapacity</th>
+                        <th>Available Resources</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let camp of camps">
+                        <td>{{ camp.name }}</td>
+                        <td>{{ camp.location }}</td>
+                        <td>{{ camp.capacity }}</td>
+                        <td class="text-dark">
+                          {{ camp.facilities?.join(', ') }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <ng-template #noCamps>
+                  <p>No camps available.</p>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- User Management -->
+      <div class="tab-pane fade" id="users">
+        <h4>User & Role Management</h4>
+        <button class="btn btn-primary mb-3" routerLink="/registration">Add New User</button>
+      
+        <div *ngIf="usersList.length > 0; else noUsers">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of usersList">
+                <td>{{ user.name }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.role }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      
+        <ng-template #noUsers>
+          <p>No users available.</p>
+        </ng-template>
+      </div>
+      
+  
+      <!-- Service Requests -->
+      <div class="tab-pane fade" id="requests">
+        <h4>Service Requests</h4>
+        <button class="btn btn-primary m-2" (click)="requestService('Food')">Request Food</button>
+        <button class="btn btn-success m-2" (click)="requestService('Water')">Request Water</button>
+        <button class="btn btn-warning m-2" (click)="requestService('Clothes')">Request Clothes</button>
+        <button class="btn btn-danger m-2" (click)="requestService('Medical Aid')">Request Medical Aid</button>
+      </div>
+  
+      <!-- Resources & Inventory -->
+      <div class="tab-pane fade" id="resources">
+        <h4>Resources & Inventory</h4>
+        <p>Stock levels of food, water, medical supplies, etc.</p>
+      </div>
+  
+      <!-- Health & Medical -->
+      <div class="tab-pane fade" id="health">
+        <h4>Health & Medical Support</h4>
+        <p>Manage health records, assign medical staff.</p>
+      </div>
+      
+  
+      <!-- Reports & Analytics -->
+      <div class="tab-pane fade" id="reports">
+        <h4>Reports & Analytics</h4>
+        <p>Generate reports on resource usage and service requests.</p>
+      </div>
+    </div>
+      <div class="tab-pane fade" id="camp">
+        <h4>Camp Management</h4>
+        <button class="btn btn-primary" (click)="addNewCamp()">Add New Camp</button>
+        <ul>
+          <li *ngFor="let camp of camps">
+            <strong>{{ camp.name }}</strong> - {{ camp.location }} (Capacity: {{ camp.capacity }})
+          </li>
+        </ul>
+  
+         <!-- Camp Announcements -->
+      <div class="mt-4">
+        <h5>Send Announcement to a Specific Camp</h5>
+        <select class="form-control mb-2" [(ngModel)]="selectedCamp">
+          <option *ngFor="let camp of camps" [value]="camp.id">{{ camp.name }} - {{ camp.location }}</option>
+        </select>
+        <textarea class="form-control mb-2" [(ngModel)]="campMessage" placeholder="Enter announcement..."></textarea>
+        <button class="btn btn-success" (click)="sendCampMessage()">Send Message</button>
+  
+        <!-- Display Announcements for Selected Camp -->
+        <h5 class="mt-3">Announcements for Selected Camp</h5>
+        <ul class="mt-2">
+          <li *ngFor="let msg of campMessages">{{ msg }}</li>
+        </ul>
+      </div>
+      </div>
+  
+    <!-- Logout Button -->
+    <div class="row mt-4">
+      <div class="col-12 text-center">
+        <button class="btn btn-danger" (click)="logout()">Logout</button>
+      </div>
+    </div>
+  </div>
+  

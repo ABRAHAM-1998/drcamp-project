@@ -1,0 +1,101 @@
+<div class="container mt-5">
+  <!-- App Name -->
+  <h2 class="text-center text-primary fw-bold">Disaster Relief Camp Management</h2>
+  <h4 class="text-center text-secondary">Add New Member</h4>
+
+  <!-- Member Form -->
+  <form [formGroup]="memberForm" (ngSubmit)="submitForm()" class="p-4 border rounded shadow bg-light">
+      <div class="row">
+          <div class="col-md-6">
+              <label class="form-label">Name</label>
+              <input type="text" class="form-control" formControlName="name" required>
+          </div>
+
+          <div class="col-md-6">
+              <label class="form-label">Age</label>
+              <input type="number" class="form-control" formControlName="age" required>
+          </div>
+
+          <div class="col-md-6">
+              <label class="form-label">Gender</label>
+              <select class="form-select" formControlName="gender" required>
+                  <option value="" disabled selected>Select Gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+              </select>
+          </div>
+
+          <div class="col-md-6">
+              <label class="form-label">Blood Group</label>
+              <input type="text" class="form-control" formControlName="bloodGroup" required>
+          </div>
+
+          <div class="col-12">
+              <label class="form-label">Address</label>
+              <textarea class="form-control" formControlName="address" required></textarea>
+          </div>
+
+          <div class="col-md-6">
+              <label class="form-label">Phone Number</label>
+              <input type="tel" class="form-control" formControlName="phoneNumber" required>
+          </div>
+
+          <div class="col-md-6">
+              <label class="form-label">Aadhar Number</label>
+              <input type="text" class="form-control" formControlName="aadharNumber" required>
+          </div>
+
+          <div class="col-md-6">
+              <label class="form-label">House Number</label>
+              <input type="text" class="form-control" formControlName="houseNumber" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Date of Birth</label>
+            <input type="date" class="form-control" formControlName="dob" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Select Camp</label>
+            <select class="form-select"  formControlName="campId" name="campId" required>
+              <option *ngFor="let camp of camps" [value]="camp.id">
+                {{ camp.name }} ({{ camp.location }})
+              </option>
+            </select>
+          </div>
+      </div>
+
+      <!-- Family Members Section -->
+      <div formArrayName="familyMembers" class="mt-4">
+          <h4 class="text-center text-secondary">Family Members</h4>
+          <div *ngFor="let familyMember of familyMembers.controls; let i = index" [formGroupName]="i" class="family-member-box p-3 border rounded my-3">
+              <h5>Member {{ i + 1 }}</h5>
+              <div class="row">
+                  <div class="col-md-4">
+                      <label class="form-label">Name</label>
+                      <input type="text" class="form-control" formControlName="name" required>
+                  </div>
+                  <div class="col-md-4">
+                      <label class="form-label">Age</label>
+                      <input type="number" class="form-control" formControlName="age" required>
+                  </div>
+                  <div class="col-md-4">
+                      <label class="form-label">Gender</label>
+                      <select class="form-select" formControlName="gender" required>
+                          <option value="" disabled selected>Select</option>
+                          <option value="Male">Male</option>
+                          <option value="Female">Female</option>
+                          <option value="Other">Other</option>
+                      </select>
+                  </div>
+              </div>
+              <button class="btn btn-danger btn-sm mt-2" (click)="removeFamilyMember(i)">Remove Member</button>
+          </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="text-center mt-3">
+          <button type="button" class="btn btn-secondary me-2" (click)="addFamilyMember()">Add Family Member</button>
+          <button type="submit" class="btn btn-primary" [disabled]="!memberForm.valid">Submit</button>
+      </div>
+  </form>
+</div>

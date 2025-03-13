@@ -1,0 +1,64 @@
+<div class="container-fluid">
+    <div class="row align-content-center full-screen w-100 justify-content-center">
+        <div class="col-md-4 shadow border p-4">
+            <!-- Toggle Login Type -->
+            <div class="text-center">
+                <mat-button-toggle-group [(ngModel)]="loginType" aria-label="Login Type">
+                    <mat-button-toggle value="admin">Admin Login</mat-button-toggle>
+                    <mat-button-toggle value="member">Camp Member Login</mat-button-toggle>
+                </mat-button-toggle-group>
+            </div>
+
+            <!-- Admin Login -->
+            <div *ngIf="loginType === 'admin'">
+                <p class="text-center fw-bold fs-3 mt-4">Admin Login</p>
+                <p class="text-center fw-bold fs-6">DISASTER RELIEF CAMP</p>
+                <div class="text-center">
+                    <mat-form-field appearance="outline" class="p-2">
+                        <mat-label>Enter Email ID</mat-label>
+                        <input matInput type="email" required #adminEmail placeholder="Enter your email">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="p-2">
+                        <mat-label>Enter Password</mat-label>
+                        <input matInput type="password" required #adminPassword placeholder="Enter password">
+                    </mat-form-field>
+                </div>
+                <div *ngIf="authService.Errormessage" class="alert alert-danger small">
+                    {{ authService.Errormessage }}
+                </div>
+                <div class="text-center p-3">
+                    <button (click)="onLogin(adminEmail.value, adminPassword.value)" class="btn btn-primary col-6">
+                        LOGIN
+                    </button>
+                </div>
+            </div>
+
+            <!-- Camp Member Login -->
+            <div *ngIf="loginType === 'member'">
+                <p class="text-center fw-bold fs-3 mt-4">Camp Member Login</p>
+                <p class="text-center fw-bold fs-6">DISASTER RELIEF CAMP</p>
+                <div class="text-center">
+                    <mat-form-field appearance="outline" class="p-2">
+                        <mat-label>Enter Mobile Number</mat-label>
+                        <input matInput type="tel" required #memberPhone placeholder="Enter your phone number">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="p-2">
+                        <mat-label>Choose Date of Birth</mat-label>
+                        <input matInput [matDatepicker]="dobPicker" required readonly #memberDOB placeholder="Select DOB">
+                        <mat-datepicker-toggle matIconSuffix [for]="dobPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #dobPicker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div *ngIf="authService.Errormessage || errorMessage" class="alert alert-danger small">
+                    {{ authService.Errormessage || errorMessage }}
+                </div>
+                <div class="text-center p-3">
+                    <button (click)="onMemberLogin(memberPhone.value, formatDate(memberDOB.value))" class="btn btn-primary col-6">
+                        LOGIN
+                    </button>
+                </div>
+            </div>
+            <button mat-raised-button routerLink="/add-member">Register New Camp-Member</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,37 @@
+<div class="container mt-4">
+    <h2 class="mb-4">Add New Camp</h2>
+  
+    <form (ngSubmit)="addCamp()" #campForm="ngForm">
+      
+      <mat-form-field appearance="outline" class="w-100 mb-3">
+        <mat-label>Camp Name</mat-label>
+        <input matInput type="text" [(ngModel)]="camp.name" name="name" required>
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline" class="w-100 mb-3">
+        <mat-label>Location</mat-label>
+        <input matInput type="text" [(ngModel)]="camp.location" name="location" required>
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline" class="w-100 mb-3">
+        <mat-label>Capacity</mat-label>
+        <input matInput type="number" [(ngModel)]="camp.capacity" name="capacity" required>
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline" class="w-100 mb-3">
+        <mat-label>Available Facilities</mat-label>
+        <mat-select [(ngModel)]="camp.facilities" name="facilities" multiple>
+          <mat-option *ngFor="let facility of availableFacilities" [value]="facility">
+            {{ facility }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+      <div class="d-flex justify-content-between mt-4">
+        <button mat-raised-button color="primary" type="submit" [disabled]="!campForm.form.valid">Add Camp</button>
+        <button mat-button color="warn" (click)="cancel()">Cancel</button>
+      </div>
+  
+    </form>
+  </div>
+  
