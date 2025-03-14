@@ -4,7 +4,6 @@
             <h2>Welcome to the Disaster Relief Camp</h2>
             <h2>CAMP SUPERVISOR</h2>
 
-            <p><strong>{{ user?.email }}</strong></p>
         </div>
     </div>
     <div class="marquee-container">
@@ -21,10 +20,10 @@
             <a class="nav-link active" data-bs-toggle="tab" href="#dashboard">Dashboard</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="tab" href="#users">User Management</a>
+            <a class="nav-link" data-bs-toggle="tab" href="#users">Camp Members & Service Request</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="tab" href="#requests">Service Requests</a>
+            <a class="nav-link" data-bs-toggle="tab" href="#Usermessages">Member Messages</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" data-bs-toggle="tab" href="#resources">Resources & Inventory</a>
@@ -33,11 +32,9 @@
             <a class="nav-link" data-bs-toggle="tab" href="#health">Health & Medical</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="tab" href="#camp">Camp Management</a>
+            <a class="nav-link" data-bs-toggle="tab" href="#camp">Camp Announcement</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="tab" href="#reports">Reports & Analytics</a>
-        </li>
+
     </ul>
 
     <!-- Tab Content -->
@@ -46,6 +43,79 @@
         <div class="tab-pane fade show active" id="dashboard">
             <div class="row">
                 <!-- Send Message to All Camps -->
+                <div class="container mt-4">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8 col-md-10">
+                            <div class="card shadow-lg rounded-3">
+                                <div class="card-header bg-dark text-white text-center">
+                                    <h5 class="mb-0">📊 Necessary Items Summary</h5>
+                                </div>
+                                <div class="card-body p-3">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered text-center align-middle">
+                                            <thead class="table-dark">
+                                                <tr>
+                                                    <th>Item</th>
+                                                    <th>Count</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>🍛 Food</td>
+                                                    <td>{{ itemCounts.food }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>💧 Water</td>
+                                                    <td>{{ itemCounts.water }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>💊 Medicine</td>
+                                                    <td>{{ itemCounts.medicine }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>🧻 Sanitary Items</td>
+                                                    <td>{{ itemCounts.sanitaryItems }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>🏕️ Shelter</td>
+                                                    <td>{{ itemCounts.shelter }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="bg-danger text-white">🚨 Emergency Help</td>
+                                                    <td class="fw-bold text-danger">{{ itemCounts.emergencyAttention }}
+                                                    </td>
+                                                </tr>
+                                                <tr class="table-secondary">
+                                                    <th colspan="2">👗 Clothing Requests</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>👕 Kids</td>
+                                                    <td>{{ itemCounts.clothing.kids }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>👚 Female</td>
+                                                    <td>{{ itemCounts.clothing.female }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>👔 Male</td>
+                                                    <td>{{ itemCounts.clothing.male }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>🧓 Old</td>
+                                                    <td>{{ itemCounts.clothing.old }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>🧥 Fatty</td>
+                                                    <td>{{ itemCounts.clothing.fatty }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
 
                 <!-- Display All Camps and Their Status -->
@@ -86,75 +156,302 @@
 
         <!-- User Management -->
         <div class="tab-pane fade" id="users">
-            <h4>CAMP MEMBERS</h4>
-        
+            <h4 class="mb-3">CAMP MEMBERS</h4>
+
             <div *ngIf="campMembers.length > 0; else noUsers">
-                <table class="table table-striped">
-                    <thead>
+                <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+                    <table class="table table-hover table-bordered text-center">
+                        <thead class="table-secondary">
+                            <tr>
+                                <th style="min-width: 150px;">Name</th>
+                                <th style="min-width: 120px;">Phone</th>
+                                <th style="min-width: 100px;">Blood Group</th>
+                                <th style="min-width: 200px;">Family Members</th>
+                                <th style="min-width: 250px;">Requests</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let user of campMembers">
+                                <td>{{ user.name }}</td>
+                                <td>{{ user.phoneNumber }}</td>
+                                <td>{{ user.bloodGroup }}</td>
+                                <td>
+                                    <ul class="list-unstyled m-0 p-0"
+                                        *ngIf="user.familyMembers?.length > 0; else noFamily">
+                                        <li *ngFor="let member of user.familyMembers">
+                                            <small>👤 {{ member.name }} ({{ member.gender }}, Age: {{ member.age
+                                                }})</small>
+                                        </li>
+                                    </ul>
+                                    <ng-template #noFamily><small class="text-muted">No Family
+                                            Members</small></ng-template>
+                                </td>
+                                <td>
+                                    <div class="d-flex flex-wrap gap-1">
+                                        <!-- Food & Water -->
+                                        <div class="btn-group">
+                                            <button class="btn btn-sm"
+                                                [ngClass]="{'btn-success': user?.userRequests?.food, 'btn-outline-secondary': !user?.userRequests?.food}"
+                                                *ngIf="user?.userRequests?.food">
+                                                🍛 Food
+                                            </button>
+                                            <button class="btn btn-sm"
+                                                [ngClass]="{'btn-success': user?.userRequests?.water, 'btn-outline-secondary': !user?.userRequests?.water}"
+                                                *ngIf="user?.userRequests?.water">
+                                                💧 Water
+                                            </button>
+                                        </div>
+
+                                        <!-- Medical & Sanitary -->
+                                        <div class="btn-group">
+                                            <button class="btn btn-sm"
+                                                [ngClass]="{'btn-success': user?.userRequests?.medicine, 'btn-outline-secondary': !user?.userRequests?.medicine}"
+                                                *ngIf="user?.userRequests?.medicine">
+                                                💊 Medicine
+                                            </button>
+                                            <button class="btn btn-sm"
+                                                [ngClass]="{'btn-success': user?.userRequests?.sanitaryItems, 'btn-outline-secondary': !user?.userRequests?.sanitaryItems}"
+                                                *ngIf="user?.userRequests?.sanitaryItems">
+                                                🧻 Sanitary
+                                            </button>
+                                        </div>
+
+                                        <!-- Clothing -->
+                                        <div class="btn-group">
+                                            <button class="btn btn-sm"
+                                                [ngClass]="{'btn-success': user?.userRequests?.clothing?.kids, 'btn-outline-secondary': !user?.userRequests?.clothing?.kids}"
+                                                *ngIf="user?.userRequests?.clothing?.kids">
+                                                👕 Kids
+                                            </button>
+                                            <button class="btn btn-sm"
+                                                [ngClass]="{'btn-success': user?.userRequests?.clothing?.female, 'btn-outline-secondary': !user?.userRequests?.clothing?.female}"
+                                                *ngIf="user?.userRequests?.clothing?.female">
+                                                👚 Female
+                                            </button>
+                                            <button class="btn btn-sm"
+                                                [ngClass]="{'btn-success': user?.userRequests?.clothing?.male, 'btn-outline-secondary': !user?.userRequests?.clothing?.male}"
+                                                *ngIf="user?.userRequests?.clothing?.male">
+                                                👔 Male
+                                            </button>
+                                            <button class="btn btn-sm"
+                                                [ngClass]="{'btn-success': user?.userRequests?.clothing?.old, 'btn-outline-secondary': !user?.userRequests?.clothing?.old}"
+                                                *ngIf="user?.userRequests?.clothing?.old">
+                                                🧓 Old
+                                            </button>
+                                        </div>
+
+                                        <!-- Shelter -->
+                                        <button class="btn btn-sm"
+                                            [ngClass]="{'btn-success': user?.userRequests?.shelter, 'btn-outline-secondary': !user?.userRequests?.shelter}"
+                                            *ngIf="user?.userRequests?.shelter">
+                                            🏕️ Shelter
+                                        </button>
+
+                                        <!-- Emergency Attention -->
+                                        <button class="btn btn-sm"
+                                            [ngClass]="{'btn-danger': user?.userRequests?.emergencyAttention, 'btn-outline-secondary': !user?.userRequests?.emergencyAttention}"
+                                            *ngIf="user?.userRequests?.emergencyAttention">
+                                            🚨 Emergency
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <ng-template #noUsers>
+                <p class="text-muted">No members available.</p>
+            </ng-template>
+        </div>
+
+
+
+
+        <!-- Service Requests -->
+        <div class="tab-pane fade" id="Usermessages">
+            <div class="container mt-3">
+                <h4 class="text-center mb-3">📩 Camp User Messages</h4>
+
+                <div *ngIf="userMessages.length > 0; else noMessages">
+                    <div class="list-group">
+                        <div class="list-group-item list-group-item-action flex-column align-items-start p-3 mb-2 shadow-sm"
+                            *ngFor="let message of userMessages">
+                            <div class="d-flex w-100 justify-content-between">
+                                <p class="mb-1"><strong>{{ message.sender || 'Anonymous' }}</strong></p>
+                                <small class="text-muted">{{ message.timestamp.toDate() | date:'short' }}</small>
+                            </div>
+                            <p class="mb-1">{{ message.text }}</p>
+                            <small class="text-primary">📞 Contact: {{ message.phoneNumber || 'N/A' }}</small>
+                        </div>
+                    </div>
+                </div>
+
+                <ng-template #noMessages>
+                    <div class="alert alert-info text-center">No messages available.</div>
+                </ng-template>
+            </div>
+        </div>
+
+
+        <!-- Resources & Inventory -->
+        <div class="tab-pane fade" id="resources">
+            <h4>📦 Resources & Inventory</h4>
+            <p>Manage and track stock levels of essential supplies.</p>
+
+            <!-- Form to Update Stock -->
+            <div class="card p-3 mb-3">
+                <h5>Update Stock</h5>
+                <div class="row">
+                    <div class="col-md-4 mb-2" *ngFor="let item of stockItems">
+                        <label>{{ item.name }}</label>
+                        <input type="number" class="form-control" [(ngModel)]="item.quantity" min="0" />
+                    </div>
+                </div>
+                <button class="btn btn-primary mt-2" (click)="updateStock()">🔄 Update Stock</button>
+            </div>
+
+            <!-- Display Stock Levels -->
+            <div class="table-responsive">
+                <table class="table table-bordered text-center">
+                    <thead class="table-dark">
                         <tr>
-                            <th>Name</th>
-                            <th>Phone</th>
-                            <th>Age</th>
-                            <th>Gender</th>
-                            <th>Blood Group</th>
-                            <th>Date of Birth</th>
-                            <th>Aadhar Number</th>
-                            <th>Address</th>
-                            <th>House Number</th>
-                            <th>Family Members</th>
+                            <th>Item</th>
+                            <th>Stock</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let user of campMembers">
-                            <td>{{ user.name }}</td>
-                            <td>{{ user.phoneNumber }}</td>
-                            <td>{{ user.age }}</td>
-                            <td>{{ user.gender }}</td>
-                            <td>{{ user.bloodGroup }}</td>
-                            <td>{{ user.dob }}</td>
-                            <td>{{ user.aadharNumber }}</td>
-                            <td>{{ user.address }}</td>
-                            <td>{{ user.houseNumber }}</td>
+                        <tr *ngFor="let item of stockItems">
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.quantity }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Health & Medical -->
+        <div class="tab-pane fade" id="health">
+            <h4>🏥 Health & Medical Support</h4>
+            <p>Manage health records and assign medical staff.</p>
+
+            <!-- Add Doctor Form -->
+            <div class="card p-3 mb-3">
+                <h5>👨‍⚕️ Add Doctor</h5>
+                <div class="row">
+                    <div class="col-md-4 mb-2">
+                        <input type="text" class="form-control" [(ngModel)]="newDoctor.name"
+                            placeholder="Doctor Name" />
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <input type="text" class="form-control" [(ngModel)]="newDoctor.specialization"
+                            placeholder="Specialization" />
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <input type="text" class="form-control" [(ngModel)]="newDoctor.phone"
+                            placeholder="Phone Number" />
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <select class="form-control" [(ngModel)]="newDoctor.availability">
+                            <option value="Available">✅ Available</option>
+                            <option value="Unavailable">❌ Unavailable</option>
+                        </select>
+                    </div>
+                    <div class="col-md-12">
+                        <button class="btn btn-primary" (click)="addDoctor()">➕ Add Doctor</button>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- List of Doctors -->
+            <div class="table-responsive">
+                <h5>👨‍⚕️ Available Doctors</h5>
+                <table class="table table-bordered text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Name</th>
+                            <th>Specialization</th>
+                            <th>Phone</th>
+                            <th>Availability</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let doctor of doctors">
+                            <td>{{ doctor.name }}</td>
+                            <td>{{ doctor.specialization }}</td>
+                            <td>{{ doctor.phone }}</td>
                             <td>
-                                <ul *ngIf="user.familyMembers && user.familyMembers.length > 0; else noFamily">
-                                    <li *ngFor="let member of user.familyMembers">
-                                        {{ member.name }} ({{ member.gender }}, Age: {{ member.age }})
-                                    </li>
-                                </ul>
-                                <ng-template #noFamily> No Family Members </ng-template>
+                                <select class="form-control" [(ngModel)]="doctor.availability">
+                                    <option value="Available">✅ Available</option>
+                                    <option value="Unavailable">❌ Unavailable</option>
+                                </select>
+                            </td>
+                            <td>
+                                <button class="btn btn-primary btn-sm" (click)="updateDoctorAvailability(doctor)">
+                                    🔄 Update
+                                </button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-        
-            <ng-template #noUsers>
-                <p>No members available.</p>
-            </ng-template>
-        </div>
-        
+            
 
+            <!-- Assign Medical Assistance -->
+            <div class="card p-3 mt-3">
+                <h5>🆘 Assign Medical Assistance</h5>
+                <div class="row">
+                    <div class="col-md-4 mb-2">
+                        <select class="form-control" [(ngModel)]="selectedMember">
+                            <option *ngFor="let member of campMembers" [ngValue]="member">
+                                {{ member.name }} ({{ member.age }} yrs)
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <input type="text" class="form-control" [(ngModel)]="medicalIssue"
+                            placeholder="Enter Medical Issue" />
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <select class="form-control" [(ngModel)]="selectedDoctor">
+                            <option *ngFor="let doctor of doctors" [ngValue]="doctor">
+                                {{ doctor.name }} ({{ doctor.specialization }})
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-12">
+                        <button class="btn btn-success" (click)="assignDoctor()">✔️ Assign Doctor</button>
+                    </div>
+                </div>
+            </div>
 
-        <!-- Service Requests -->
-        <div class="tab-pane fade" id="requests">
-            <h4>Service Requests</h4>
-            <button class="btn btn-primary m-2" (click)="requestService('Food')">Request Food</button>
-            <button class="btn btn-success m-2" (click)="requestService('Water')">Request Water</button>
-            <button class="btn btn-warning m-2" (click)="requestService('Clothes')">Request Clothes</button>
-            <button class="btn btn-danger m-2" (click)="requestService('Medical Aid')">Request Medical Aid</button>
+            <!-- List of Assigned Medical Cases -->
+            <div class="table-responsive mt-3">
+                <h5>📋 Medical Cases</h5>
+                <table class="table table-bordered text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Member Name</th>
+                            <th>Age</th>
+                            <th>Issue</th>
+                            <th>Assigned Doctor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let case of medicalCases">
+                            <td>{{ case.name }}</td>
+                            <td>{{ case.age }}</td>
+                            <td>{{ case.issue }}</td>
+                            <td>{{ case.assignedDoctor }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
-        <!-- Resources & Inventory -->
-        <div class="tab-pane fade" id="resources">
-            <h4>Resources & Inventory</h4>
-            <p>Stock levels of food, water, medical supplies, etc.</p>
-        </div>
-
-        <!-- Health & Medical -->
-        <div class="tab-pane fade" id="health">
-            <h4>Health & Medical Support</h4>
-            <p>Manage health records, assign medical staff.</p>
-        </div>
 
 
         <!-- Reports & Analytics -->
@@ -164,36 +461,32 @@
         </div>
     </div>
     <div class="tab-pane fade" id="camp">
-        <h4>Camp Management</h4>
-        <button class="btn btn-primary" (click)="addNewCamp()">Add New Camp</button>
-        <ul>
-            <li *ngFor="let camp of camps">
-                <strong>{{ camp.name }}</strong> - {{ camp.location }} (Capacity: {{ camp.capacity }})
-            </li>
-        </ul>
+        <h4>Camp Message</h4>
+
+        <h5>📢 Send Announcement to Camp</h5>
+
+        <textarea class="form-control mb-2" [(ngModel)]="campMessage" placeholder="Enter announcement..."
+            rows="3"></textarea>
+
+        <button class="btn btn-success" (click)="sendCampMessage()">📨 Send Message</button>
 
         <!-- Camp Announcements -->
-        <div class="mt-4">
-            <h5>Send Announcement to a Specific Camp</h5>
-            <select class="form-control mb-2" [(ngModel)]="selectedCamp">
-                <option *ngFor="let camp of camps" [value]="camp.id">{{ camp.name }} - {{ camp.location }}</option>
-            </select>
-            <textarea class="form-control mb-2" [(ngModel)]="campMessage"
-                placeholder="Enter announcement..."></textarea>
-            <button class="btn btn-success" (click)="sendCampMessage()">Send Message</button>
+        <h5 class="mt-3">📌 Camp Announcements</h5>
 
-            <!-- Display Announcements for Selected Camp -->
-            <h5 class="mt-3">Announcements for Selected Camp</h5>
-            <ul class="mt-2">
-                <li *ngFor="let msg of campMessages">{{ msg }}</li>
+        <div *ngIf="campMessages.length > 0; else noAnnouncements">
+            <ul class="list-group mt-2">
+                <li class="list-group-item d-flex justify-content-between align-items-center"
+                    *ngFor="let msg of campMessages">
+                    <span>📝 {{ msg.message }}</span>
+                    <small class="text-muted">{{ msg.timestamp?.toDate() | date:'short' }}</small>
+                </li>
             </ul>
         </div>
+
+        <ng-template #noAnnouncements>
+            <div class="alert alert-info text-center mt-2">No announcements available.</div>
+        </ng-template>
     </div>
 
-    <!-- Logout Button -->
-    <div class="row mt-4">
-        <div class="col-12 text-center">
-            <button class="btn btn-danger" (click)="logout()">Logout</button>
-        </div>
-    </div>
+
 </div>

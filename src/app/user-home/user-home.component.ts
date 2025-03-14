@@ -22,7 +22,8 @@ export class UserHomeComponent implements OnInit {
   camps: any[] = [];  
   state: any;
 
- 
+  newMessage: string = '';
+  messages: any[] = [];
 
 
   userId!: string;
@@ -49,7 +50,7 @@ export class UserHomeComponent implements OnInit {
   ) {
     this.state = this.router.getCurrentNavigation()?.extras.state;
     console.log(this.state);
-
+    this.loadMessages();
     this.loadCamps();
     this.loadCampMessages();
     this.loadServiceRequests();
@@ -101,7 +102,7 @@ export class UserHomeComponent implements OnInit {
   }
 
   loadAdminMessage() {
-    this.firestore.collection('camp').doc('admin').get().subscribe(doc => {
+    this.firestore.collection('ADMIN-MESSAGE').doc('ADMIN-MESSAGE').get().subscribe(doc => {
       if (doc.exists) {
         let data: any = doc.data();
         this.adminMessage = data.message || 'No message from admin.';
@@ -258,4 +259,33 @@ sendCampMessage() {
       timestamp: new Date()
     };
   }
+
+  loadMessages() {
+    this.firestore.collection('messages', ref => ref.orderBy('timestamp', 'desc').where('senderId', '==', this.state['id']))
+      .valueChanges()
+      .subscribe((messages: any[]) => {
+        this.messages = messages;
+      });
+  }
+  sendMessage() {
+    if (!this.newMessage.trim()) return;
+
+    const messageData = {
+      sender: this.state['name'],
+      text: this.newMessage,
+      timestamp: new Date(),
+      senderId: this.state['id'],
+      campId: this.state['campId'],
+      phoneNumber: this.state['phoneNumber']
+    };
+
+    this.firestore.collection('messages').add(messageData)
+      .then(() => {
+        this.newMessage = '';
+      })
+      .catch(error => {
+        console.error('Error sending message:', error);
+      });
+  }
+
 }

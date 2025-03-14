@@ -1,17 +1,7 @@
-<div class="container mt-5">
-  <div class="row">
-    <div class="col-12 text-center">
-      <h2>Welcome to the Disaster Relief Camp</h2>
-      <p><strong>{{ user?.email }}</strong></p>
-    </div>
-  </div>
+<div class="container ">
 
+  <div class="row mt-3">
 
-
-
-
-
-  <div class="row mt-1">
 
     <div *ngIf="state" class="card shadow-lg rounded-4 p-4 text-center col-md-5">
       <div class="card-body">
@@ -52,83 +42,102 @@
 
 
     <div class="col-md-7">
+      <div class="col-12 text-center">
+        <h1 class="fw-bold">Welcome to the Disaster Relief Camp</h1>
+      </div>
+      <div class="marquee-container">
+        <p class="">Important Message!</p>
 
+        <marquee behavior="" direction="">
+          <p class="marquee-text">{{ adminMessage }}</p>
+        </marquee>
+      </div>
+     
 
       <!-- Bootstrap Tabs -->
       <ul class="nav nav-tabs mt-4" id="adminTabs">
         <li class="nav-item">
-          <a class="nav-link active" data-bs-toggle="tab" href="#dashboard">Service Request</a>
+          <a class="nav-link active" data-bs-toggle="tab" href="#service">Request Essential Services</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" data-bs-toggle="tab" href="#users">User Management</a>
+          <a class="nav-link" data-bs-toggle="tab" href="#users">🚨 Report an Incident</a>
         </li>
+
+      
         <li class="nav-item">
-          <a class="nav-link" data-bs-toggle="tab" href="#requests">Service Requests</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" data-bs-toggle="tab" href="#resources">Resources & Inventory</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" data-bs-toggle="tab" href="#health">Health & Medical</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" data-bs-toggle="tab" href="#camp">Camp Management</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" data-bs-toggle="tab" href="#reports">Reports & Analytics</a>
+          <a class="nav-link" data-bs-toggle="tab" href="#messages">Communication & Messaging</a>
         </li>
       </ul>
 
       <!-- Tab Content -->
       <div class="tab-content mt-3">
         <!-- Dashboard -->
-        <div class="tab-pane fade show active" id="dashboard">
-     
+        <div class="tab-pane fade show active" id="service">
+
           <div class="card p-3 shadow-lg rounded-4">
             <h4 class="text-center text-primary">🆘 Request Essential Services</h4>
-        
+
             <!-- Food & Water -->
             <div class="mt-3">
-                <h6>🍛 Food & Water</h6>
-                <div class="d-flex gap-2">
-                    <button class="btn" [ngClass]="{'btn-success': requests.food, 'btn-outline-secondary': !requests.food}" (click)="toggleRequest('food')">Food</button>
-                    <button class="btn" [ngClass]="{'btn-success': requests.water, 'btn-outline-secondary': !requests.water}" (click)="toggleRequest('water')">Water</button>
-                </div>
+              <h6>🍛 Food & Water</h6>
+              <div class="d-flex gap-2">
+                <button class="btn" [ngClass]="{'btn-success': requests.food, 'btn-outline-secondary': !requests.food}"
+                  (click)="toggleRequest('food')">Food</button>
+                <button class="btn"
+                  [ngClass]="{'btn-success': requests.water, 'btn-outline-secondary': !requests.water}"
+                  (click)="toggleRequest('water')">Water</button>
+              </div>
             </div>
-        
+
             <!-- Medical & Sanitary -->
             <div class="mt-3">
-                <h6>💊 Medical & Sanitary</h6>
-                <div class="d-flex gap-2">
-                    <button class="btn" [ngClass]="{'btn-success': requests.medicine, 'btn-outline-secondary': !requests.medicine}" (click)="toggleRequest('medicine')">Medicine</button>
-                    <button class="btn" [ngClass]="{'btn-success': requests.sanitaryItems, 'btn-outline-secondary': !requests.sanitaryItems}" (click)="toggleRequest('sanitaryItems')">Sanitary Items</button>
-                </div>
+              <h6>💊 Medical & Sanitary</h6>
+              <div class="d-flex gap-2">
+                <button class="btn"
+                  [ngClass]="{'btn-success': requests.medicine, 'btn-outline-secondary': !requests.medicine}"
+                  (click)="toggleRequest('medicine')">Medicine</button>
+                <button class="btn"
+                  [ngClass]="{'btn-success': requests.sanitaryItems, 'btn-outline-secondary': !requests.sanitaryItems}"
+                  (click)="toggleRequest('sanitaryItems')">Sanitary Items</button>
+              </div>
             </div>
-        
+
             <!-- Clothing -->
             <div class="mt-3">
-                <h6>👕 Clothing</h6>
-                <div class="d-flex flex-wrap gap-2">
-                    <button class="btn" [ngClass]="{'btn-success': requests.clothing.kids, 'btn-outline-secondary': !requests.clothing.kids}" (click)="toggleClothing('kids')">Kids</button>
-                    <button class="btn" [ngClass]="{'btn-success': requests.clothing.female, 'btn-outline-secondary': !requests.clothing.female}" (click)="toggleClothing('female')">Female</button>
-                    <button class="btn" [ngClass]="{'btn-success': requests.clothing.male, 'btn-outline-secondary': !requests.clothing.male}" (click)="toggleClothing('male')">Male</button>
-                    <button class="btn" [ngClass]="{'btn-success': requests.clothing.old, 'btn-outline-secondary': !requests.clothing.old}" (click)="toggleClothing('old')">Old</button>
-                    <button class="btn" [ngClass]="{'btn-success': requests.clothing.fatty, 'btn-outline-secondary': !requests.clothing.fatty}" (click)="toggleClothing('fatty')">Fatty</button>
-                </div>
+              <h6>👕 Clothing</h6>
+              <div class="d-flex flex-wrap gap-2">
+                <button class="btn"
+                  [ngClass]="{'btn-success': requests.clothing.kids, 'btn-outline-secondary': !requests.clothing.kids}"
+                  (click)="toggleClothing('kids')">Kids</button>
+                <button class="btn"
+                  [ngClass]="{'btn-success': requests.clothing.female, 'btn-outline-secondary': !requests.clothing.female}"
+                  (click)="toggleClothing('female')">Female</button>
+                <button class="btn"
+                  [ngClass]="{'btn-success': requests.clothing.male, 'btn-outline-secondary': !requests.clothing.male}"
+                  (click)="toggleClothing('male')">Male</button>
+                <button class="btn"
+                  [ngClass]="{'btn-success': requests.clothing.old, 'btn-outline-secondary': !requests.clothing.old}"
+                  (click)="toggleClothing('old')">Old</button>
+                <button class="btn"
+                  [ngClass]="{'btn-success': requests.clothing.fatty, 'btn-outline-secondary': !requests.clothing.fatty}"
+                  (click)="toggleClothing('fatty')">Fatty</button>
+              </div>
             </div>
-        
+
             <!-- Emergency Attention -->
             <div class="mt-3">
-                <h6>🚨 Emergency Attention</h6>
-                <button class="btn" [ngClass]="{'btn-danger': requests.emergencyAttention, 'btn-outline-secondary': !requests.emergencyAttention}" (click)="toggleRequest('emergencyAttention')">Request Immediate Help</button>
+              <h6>🚨 Emergency Attention</h6>
+              <button class="btn"
+                [ngClass]="{'btn-danger': requests.emergencyAttention, 'btn-outline-secondary': !requests.emergencyAttention}"
+                (click)="toggleRequest('emergencyAttention')">Request Immediate Help</button>
             </div>
-        
+
             <!-- Submit Request -->
             <div class="text-center mt-4">
-                <button class="btn btn-primary" (click)="submitRequests()">Submit Request</button>
+              <button class="btn btn-primary" (click)="submitRequests()">Submit Request</button>
             </div>
-        </div>
-        
+          </div>
+
         </div>
 
         <!-- User Management -->
@@ -138,115 +147,101 @@
 
           <div class="tab-pane fade show active" id="incident">
             <div class="card p-3 shadow-lg rounded-4">
-                <h4 class="text-center text-danger">🚨 Report an Incident</h4>
-    
-                <!-- Incident Type Selection -->
-                <div class="mt-3">
-                    <h6>⚠️ Incident Type</h6>
-                    <div class="d-flex flex-wrap gap-2">
-                        <button class="btn"
-                            [ngClass]="{'btn-danger': report.type === 'Missing Person', 'btn-outline-secondary': report.type !== 'Missing Person'}"
-                            (click)="setReportType('Missing Person')">Missing Person</button>
-    
-                        <button class="btn"
-                            [ngClass]="{'btn-warning': report.type === 'Emergency', 'btn-outline-secondary': report.type !== 'Emergency'}"
-                            (click)="setReportType('Emergency')">Emergency</button>
-    
-                        <button class="btn"
-                            [ngClass]="{'btn-primary': report.type === 'Safety Concern', 'btn-outline-secondary': report.type !== 'Safety Concern'}"
-                            (click)="setReportType('Safety Concern')">Safety Concern</button>
-                    </div>
+              <h4 class="text-center text-danger">🚨 Report an Incident</h4>
+
+              <!-- Incident Type Selection -->
+              <div class="mt-3">
+                <h6>⚠️ Incident Type</h6>
+                <div class="d-flex flex-wrap gap-2">
+                  <button class="btn"
+                    [ngClass]="{'btn-danger': report.type === 'Missing Person', 'btn-outline-secondary': report.type !== 'Missing Person'}"
+                    (click)="setReportType('Missing Person')">Missing Person</button>
+
+                  <button class="btn"
+                    [ngClass]="{'btn-warning': report.type === 'Emergency', 'btn-outline-secondary': report.type !== 'Emergency'}"
+                    (click)="setReportType('Emergency')">Emergency</button>
+
+                  <button class="btn"
+                    [ngClass]="{'btn-primary': report.type === 'Safety Concern', 'btn-outline-secondary': report.type !== 'Safety Concern'}"
+                    (click)="setReportType('Safety Concern')">Safety Concern</button>
                 </div>
-    
-                <!-- Missing Person Form -->
-                <div *ngIf="report.type === 'Missing Person'" class="mt-3">
-                    <h6>🧑 Missing Person Details</h6>
-                    <input type="text" class="form-control mb-2" placeholder="Full Name" [(ngModel)]="report.name">
-                    <textarea class="form-control mb-2" rows="2" placeholder="Last seen location & details" [(ngModel)]="report.description"></textarea>
-                </div>
-    
-                <!-- Emergency / Safety Concern Form -->
-                <div *ngIf="report.type !== 'Missing Person'" class="mt-3">
-                    <h6>📢 Describe the Incident</h6>
-                    <textarea class="form-control mb-2" rows="3" placeholder="Describe the emergency or concern" [(ngModel)]="report.description"></textarea>
-                </div>
-    
-                <!-- Contact Information -->
-                <div class="mt-3">
-                    <h6>📞 Contact Number</h6>
-                    <input type="tel" class="form-control" placeholder="Your Contact Number" [(ngModel)]="report.contact">
-                </div>
-    
-                <!-- Submit Report -->
-                <div class="text-center mt-4">
-                    <button class="btn btn-danger" (click)="submitIncidentReport()">Submit Report</button>
-                </div>
+              </div>
+
+              <!-- Missing Person Form -->
+              <div *ngIf="report.type === 'Missing Person'" class="mt-3">
+                <h6>🧑 Missing Person Details</h6>
+                <input type="text" class="form-control mb-2" placeholder="Full Name" [(ngModel)]="report.name">
+                <textarea class="form-control mb-2" rows="2" placeholder="Last seen location & details"
+                  [(ngModel)]="report.description"></textarea>
+              </div>
+
+              <!-- Emergency / Safety Concern Form -->
+              <div *ngIf="report.type !== 'Missing Person'" class="mt-3">
+                <h6>📢 Describe the Incident</h6>
+                <textarea class="form-control mb-2" rows="3" placeholder="Describe the emergency or concern"
+                  [(ngModel)]="report.description"></textarea>
+              </div>
+
+              <!-- Contact Information -->
+              <div class="mt-3">
+                <h6>📞 Contact Number</h6>
+                <input type="tel" class="form-control" placeholder="Your Contact Number" [(ngModel)]="report.contact">
+              </div>
+
+              <!-- Submit Report -->
+              <div class="text-center mt-4">
+                <button class="btn btn-danger" (click)="submitIncidentReport()">Submit Report</button>
+              </div>
             </div>
-        </div>
-      
-        </div>
+          </div>
 
-
-        <!-- Service Requests -->
-        <div class="tab-pane fade" id="requests">
-          <h4>Service Requests</h4>
-          <button class="btn btn-primary m-2" (click)="requestService('Food')">Request Food</button>
-          <button class="btn btn-success m-2" (click)="requestService('Water')">Request Water</button>
-          <button class="btn btn-warning m-2" (click)="requestService('Clothes')">Request Clothes</button>
-          <button class="btn btn-danger m-2" (click)="requestService('Medical Aid')">Request Medical Aid</button>
         </div>
 
-        <!-- Resources & Inventory -->
-        <div class="tab-pane fade" id="resources">
-          <h4>Resources & Inventory</h4>
-          <p>Stock levels of food, water, medical supplies, etc.</p>
-        </div>
 
-        <!-- Health & Medical -->
-        <div class="tab-pane fade" id="health">
-          <h4>Health & Medical Support</h4>
-          <p>Manage health records, assign medical staff.</p>
-        </div>
 
+
+
+        <div class="tab-pane fade show active" id="messages">
+          <div class="card p-3 shadow-lg rounded-4">
+            <h4 class="text-center text-primary">💬 Communication & Messaging</h4>
+
+            <!-- Announcements Section -->
+            <div class="mt-3">
+              <h5>📢 Camp Announcements</h5>
+              <marquee class="bg-light p-2 rounded" behavior="scroll" direction="left">
+                {{ adminMessage || 'No announcements at the moment.' }}
+              </marquee>
+            </div>
+
+            <!-- Chat with Admins/Volunteers -->
+            <div class="mt-3">
+              <h5>📩 Send a Message</h5>
+              <textarea class="form-control mb-2" rows="3" placeholder="Type your message..."
+                [(ngModel)]="newMessage"></textarea>
+              <button class="btn btn-primary w-100" (click)="sendMessage()">Send</button>
+            </div>
+
+            <!-- Message History -->
+            <div class="mt-3">
+              <h5>📜 Message History</h5>
+              <div *ngIf="messages.length > 0; else noMessages">
+                <ul class="list-group">
+                  <li *ngFor="let msg of messages" class="list-group-item">
+                    <strong>{{ msg.sender }}:</strong> {{ msg.text }} <br>
+                    <small class="text-muted">{{ msg.timestamp | date:'short' }}</small>
+                  </li>
+                </ul>
+              </div>
+              <ng-template #noMessages>
+                <p class="text-muted">No messages yet.</p>
+              </ng-template>
+            </div>
+          </div>
+        </div>
 
         <!-- Reports & Analytics -->
-        <div class="tab-pane fade" id="reports">
-          <h4>Reports & Analytics</h4>
-          <p>Generate reports on resource usage and service requests.</p>
-        </div>
-      </div>
-      <div class="tab-pane fade" id="camp">
-        <h4>Camp Management</h4>
-        <button class="btn btn-primary" (click)="addNewCamp()">Add New Camp</button>
-        <ul>
-          <li *ngFor="let camp of camps">
-            <strong>{{ camp.name }}</strong> - {{ camp.location }} (Capacity: {{ camp.capacity }})
-          </li>
-        </ul>
-
-        <!-- Camp Announcements -->
-        <div class="mt-4">
-          <h5>Send Announcement to a Specific Camp</h5>
-          <select class="form-control mb-2" [(ngModel)]="selectedCamp">
-            <option *ngFor="let camp of camps" [value]="camp.id">{{ camp.name }} - {{ camp.location }}</option>
-          </select>
-          <textarea class="form-control mb-2" [(ngModel)]="campMessage" placeholder="Enter announcement..."></textarea>
-          <button class="btn btn-success" (click)="sendCampMessage()">Send Message</button>
-
-          <!-- Display Announcements for Selected Camp -->
-          <h5 class="mt-3">Announcements for Selected Camp</h5>
-          <ul class="mt-2">
-            <li *ngFor="let msg of campMessages">{{ msg }}</li>
-          </ul>
-        </div>
       </div>
 
-      <!-- Logout Button -->
-      <div class="row mt-4">
-        <div class="col-12 text-center">
-          <button class="btn btn-danger" (click)="logout()">Logout</button>
-        </div>
-      </div>
     </div>
 
   </div>

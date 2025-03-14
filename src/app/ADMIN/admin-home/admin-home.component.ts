@@ -105,22 +105,19 @@ loadCamps() {
 
 // Send message to all camps
 sendMessageToAllCamps() {
-  if (!this.campMessage.trim()) {
-    this.snackBar.open('Message cannot be empty!', 'Close', { duration: 3000 });
-    return;
+    if (!this.campMessage.trim()) {
+      this.snackBar.open('Message cannot be empty!', 'Close', { duration: 3000 });
+      return;
+    }
+  
+      this.firestore.collection('ADMIN-MESSAGE').doc('ADMIN-MESSAGE').set({
+        message: this.campMessage,
+        timestamp: new Date()
+      });
+  
+    this.snackBar.open('Message sent to all camps!', 'Close', { duration: 3000 });
+    this.campMessage = '';  // Clear input after sending
   }
-
-  this.camps.forEach(camp => {
-    this.firestore.collection('campMessages').add({
-      message: this.campMessage,
-      campId: camp.id,
-      timestamp: new Date()
-    });
-  });
-
-  this.snackBar.open('Message sent to all camps!', 'Close', { duration: 3000 });
-  this.campMessage = '';  // Clear input after sending
-}
 addNewCamp() {
   this.router.navigate(['/add-camp']); // Redirects to the camp creation page
 }
