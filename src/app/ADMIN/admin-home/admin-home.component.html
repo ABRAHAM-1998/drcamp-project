@@ -12,10 +12,10 @@
         <a class="nav-link active" data-bs-toggle="tab" href="#dashboard">Dashboard</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="tab" href="#users">User Management</a>
+        <a class="nav-link" data-bs-toggle="tab" href="#users">Supervisor Management</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="tab" href="#requests">Service Requests</a>
+        <a class="nav-link" data-bs-toggle="tab" href="#requests">All Camp Members</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" data-bs-toggle="tab" href="#resources">Resources & Inventory</a>
@@ -27,7 +27,7 @@
         <a class="nav-link" data-bs-toggle="tab" href="#camp">Camp Management</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="tab" href="#reports">Reports & Analytics</a>
+        <a class="nav-link" data-bs-toggle="tab" href="#reports">Incident Reports </a>
       </li>
     </ul>
   
@@ -89,7 +89,7 @@
       <!-- User Management -->
       <div class="tab-pane fade" id="users">
         <h4>User & Role Management</h4>
-        <button class="btn btn-primary mb-3" routerLink="/registration">Add New User</button>
+        <button class="btn btn-primary mb-3" routerLink="/registration">Add New Supervisor</button>
       
         <div *ngIf="usersList.length > 0; else noUsers">
           <table class="table table-striped">
@@ -118,40 +118,223 @@
   
       <!-- Service Requests -->
       <div class="tab-pane fade" id="requests">
-        <h4>Service Requests</h4>
-        <button class="btn btn-primary m-2" (click)="requestService('Food')">Request Food</button>
-        <button class="btn btn-success m-2" (click)="requestService('Water')">Request Water</button>
-        <button class="btn btn-warning m-2" (click)="requestService('Clothes')">Request Clothes</button>
-        <button class="btn btn-danger m-2" (click)="requestService('Medical Aid')">Request Medical Aid</button>
+        <h4>All Camp Members</h4>
+        <h4 class="mb-3">CAMP MEMBERS</h4>
+
+        <div *ngIf="campMembers.length > 0; else noUsers">
+            <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+                <table class="table table-hover table-bordered text-center">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th style="min-width: 150px;">Name</th>
+                            <th style="min-width: 120px;">Phone</th>
+                            <th style="min-width: 100px;">Blood Group</th>
+                            <th style="min-width: 200px;">Family Members</th>
+                            <th style="min-width: 250px;">Requests</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let user of campMembers">
+                            <td>{{ user.name }}</td>
+                            <td>{{ user.phoneNumber }}</td>
+                            <td>{{ user.bloodGroup }}</td>
+                            <td>
+                                <ul class="list-unstyled m-0 p-0"
+                                    *ngIf="user.familyMembers?.length > 0; else noFamily">
+                                    <li *ngFor="let member of user.familyMembers">
+                                        <small>👤 {{ member.name }} ({{ member.gender }}, Age: {{ member.age
+                                            }})</small>
+                                    </li>
+                                </ul>
+                                <ng-template #noFamily><small class="text-muted">No Family
+                                        Members</small></ng-template>
+                            </td>
+                            <td>
+                                <div class="d-flex flex-wrap gap-1">
+                                    <!-- Food & Water -->
+                                    <div class="btn-group">
+                                        <button class="btn btn-sm"
+                                            [ngClass]="{'btn-success': user?.userRequests?.food, 'btn-outline-secondary': !user?.userRequests?.food}"
+                                            *ngIf="user?.userRequests?.food">
+                                            🍛 Food
+                                        </button>
+                                        <button class="btn btn-sm"
+                                            [ngClass]="{'btn-success': user?.userRequests?.water, 'btn-outline-secondary': !user?.userRequests?.water}"
+                                            *ngIf="user?.userRequests?.water">
+                                            💧 Water
+                                        </button>
+                                    </div>
+
+                                    <!-- Medical & Sanitary -->
+                                    <div class="btn-group">
+                                        <button class="btn btn-sm"
+                                            [ngClass]="{'btn-success': user?.userRequests?.medicine, 'btn-outline-secondary': !user?.userRequests?.medicine}"
+                                            *ngIf="user?.userRequests?.medicine">
+                                            💊 Medicine
+                                        </button>
+                                        <button class="btn btn-sm"
+                                            [ngClass]="{'btn-success': user?.userRequests?.sanitaryItems, 'btn-outline-secondary': !user?.userRequests?.sanitaryItems}"
+                                            *ngIf="user?.userRequests?.sanitaryItems">
+                                            🧻 Sanitary
+                                        </button>
+                                    </div>
+
+                                    <!-- Clothing -->
+                                    <div class="btn-group">
+                                        <button class="btn btn-sm"
+                                            [ngClass]="{'btn-success': user?.userRequests?.clothing?.kids, 'btn-outline-secondary': !user?.userRequests?.clothing?.kids}"
+                                            *ngIf="user?.userRequests?.clothing?.kids">
+                                            👕 Kids
+                                        </button>
+                                        <button class="btn btn-sm"
+                                            [ngClass]="{'btn-success': user?.userRequests?.clothing?.female, 'btn-outline-secondary': !user?.userRequests?.clothing?.female}"
+                                            *ngIf="user?.userRequests?.clothing?.female">
+                                            👚 Female
+                                        </button>
+                                        <button class="btn btn-sm"
+                                            [ngClass]="{'btn-success': user?.userRequests?.clothing?.male, 'btn-outline-secondary': !user?.userRequests?.clothing?.male}"
+                                            *ngIf="user?.userRequests?.clothing?.male">
+                                            👔 Male
+                                        </button>
+                                        <button class="btn btn-sm"
+                                            [ngClass]="{'btn-success': user?.userRequests?.clothing?.old, 'btn-outline-secondary': !user?.userRequests?.clothing?.old}"
+                                            *ngIf="user?.userRequests?.clothing?.old">
+                                            🧓 Old
+                                        </button>
+                                    </div>
+
+                                    <!-- Shelter -->
+                                    <button class="btn btn-sm"
+                                        [ngClass]="{'btn-success': user?.userRequests?.shelter, 'btn-outline-secondary': !user?.userRequests?.shelter}"
+                                        *ngIf="user?.userRequests?.shelter">
+                                        🏕️ Shelter
+                                    </button>
+
+                                    <!-- Emergency Attention -->
+                                    <button class="btn btn-sm"
+                                        [ngClass]="{'btn-danger': user?.userRequests?.emergencyAttention, 'btn-outline-secondary': !user?.userRequests?.emergencyAttention}"
+                                        *ngIf="user?.userRequests?.emergencyAttention">
+                                        🚨 Emergency
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <ng-template #noUsers>
+            <p class="text-muted">No members available.</p>
+        </ng-template>
       </div>
   
       <!-- Resources & Inventory -->
       <div class="tab-pane fade" id="resources">
         <h4>Resources & Inventory</h4>
         <p>Stock levels of food, water, medical supplies, etc.</p>
+        <div *ngFor="let campId of allCampStocks | keyvalue">
+          <h5 class="mt-3">🏕️ Camp ID: {{ campId.key }}</h5>
+          <table class="table table-bordered">
+            <thead class="table-light">
+              <tr>
+                <th>Item</th>
+                <th>Stock</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of stockItems">
+                <td>{{ item.name }}</td>
+                <td>
+           {{ getStockQuantity(campId.key, item.key) }}
+
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
       </div>
   
       <!-- Health & Medical -->
       <div class="tab-pane fade" id="health">
         <h4>Health & Medical Support</h4>
-        <p>Manage health records, assign medical staff.</p>
+        <div class="table-responsive">
+          <h5>👨‍⚕️ Available Doctors</h5>
+          <table class="table table-bordered text-center">
+              <thead class="table-dark">
+                  <tr>
+                      <th>Name</th>
+                      <th>Specialization</th>
+                      <th>Phone</th>
+                      <th>Availability</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr *ngFor="let doctor of doctors">
+                      <td>{{ doctor.name }}</td>
+                      <td>{{ doctor.specialization }}</td>
+                      <td>{{ doctor.phone }}</td>
+                      <td>
+                          <select class="form-control" [(ngModel)]="doctor.availability">
+                              <option value="Available">✅ Available</option>
+                              <option value="Unavailable">❌ Unavailable</option>
+                          </select>
+                      </td>
+                      
+                  </tr>
+              </tbody>
+          </table>
+      </div>
       </div>
       
   
       <!-- Reports & Analytics -->
       <div class="tab-pane fade" id="reports">
-        <h4>Reports & Analytics</h4>
-        <p>Generate reports on resource usage and service requests.</p>
+        <h4>🚨 Incident Reports</h4>
+
+        <div *ngIf="incidentReports.length > 0; else noReports">
+            <div class="table-responsive">
+                <table class="table table-bordered text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Contact</th>
+                            <th>Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let report of incidentReports">
+                            <td>{{ report.type }}   <br> {{ report.name }}</td>
+                            <td> {{ report.description }}</td>
+                            <td>{{ report.contact }}</td>
+                            <td>{{ report.timestamp?.toDate() | date:'medium' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <ng-template #noReports>
+            <p>No incident reports available.</p>
+        </ng-template>
       </div>
     </div>
       <div class="tab-pane fade" id="camp">
         <h4>Camp Management</h4>
         <button class="btn btn-primary" (click)="addNewCamp()">Add New Camp</button>
         <ul>
-          <li *ngFor="let camp of camps">
-            <strong>{{ camp.name }}</strong> - {{ camp.location }} (Capacity: {{ camp.capacity }})
+          <li *ngFor="let camp of camps" class="camp-item d-flex justify-content-between align-items-center">
+            <div>
+              <strong>{{ camp.name }}</strong> - {{ camp.location }} (Capacity: {{ camp.capacity }})
+            </div>
+            <button mat-mini-fab color="warn" (click)="deleteCamp(camp.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
           </li>
         </ul>
+        
   
          <!-- Camp Announcements -->
       <div class="mt-4">
@@ -170,11 +353,6 @@
       </div>
       </div>
   
-    <!-- Logout Button -->
-    <div class="row mt-4">
-      <div class="col-12 text-center">
-        <button class="btn btn-danger" (click)="logout()">Logout</button>
-      </div>
-    </div>
+ 
   </div>
   

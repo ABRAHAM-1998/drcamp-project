@@ -122,38 +122,7 @@
 
 
                 <!-- Display All Camps and Their Status -->
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header">All Camps Status</div>
-                        <div class="card-body">
-                            <div *ngIf="camps.length > 0; else noCamps">
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Camp Name</th>
-                                            <th>Location</th>
-                                            <th>CampCapacity</th>
-                                            <th>Available Resources</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor="let camp of camps">
-                                            <td>{{ camp.name }}</td>
-                                            <td>{{ camp.location }}</td>
-                                            <td>{{ camp.capacity }}</td>
-                                            <td class="text-dark">
-                                                {{ camp.facilities?.join(', ') }}
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <ng-template #noCamps>
-                                <p>No camps available.</p>
-                            </ng-template>
-                        </div>
-                    </div>
-                </div>
+             
             </div>
         </div>
 

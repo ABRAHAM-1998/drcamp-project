@@ -1,28 +1,27 @@
-
-import { Component, HostListener } from "@angular/core";
-import { MatSnackBar } from "@angular/material/snack-bar";
-import { Router } from "@angular/router";
-import { Observable, Subscription, combineLatest, from, map } from "rxjs";
-import { AngularFireAuth } from "@angular/fire/compat/auth";
+import { Component, HostListener } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { Observable, Subscription, combineLatest, from, map } from 'rxjs';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Location } from '@angular/common';
 import {
   AngularFirestore,
   AngularFirestoreCollection,
   AngularFirestoreDocument,
-} from "@angular/fire/compat/firestore";
-import { AuthService } from "./SERVICE/auth.service";
-import { User } from "./SERVICE/model";
+} from '@angular/fire/compat/firestore';
+import { AuthService } from './SERVICE/auth.service';
+import { User } from './SERVICE/model';
 
 @Component({
-  selector: "app-root",
-  templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.scss"],
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
   user!: any;
   private userDataSubscription: Subscription | undefined;
 
-  title = "DR-CAMP";
+  title = 'DR-CAMP';
   userData: any | undefined;
   constructor(
     private snackBar: MatSnackBar,
@@ -32,12 +31,25 @@ export class AppComponent {
     private auth: AngularFireAuth,
     private location: Location
   ) {
-    const encryptedUserData = localStorage.getItem("encryptedUserData");
+    this.auth.authState.subscribe((user) => {
+      if (user) {
+        let data = this.authService.getUserData(user.uid).then((data) => {
+          console.log(data)
+          this.user = data;
+
+        })
+      }
+    });
+    const encryptedUserData = localStorage.getItem('encryptedUserData');
     if (encryptedUserData) {
       const userEnc = atob(encryptedUserData!);
-      const userData: User = {...JSON.parse(userEnc!)}
-      this.user = userData
-      console.log(userEnc,'===================================================',userData)
+      const userData: User = { ...JSON.parse(userEnc!) };
+      this.user = userData;
+      console.log(
+        userEnc,
+        '===================================================',
+        userData
+      );
     }
   }
   goBack() {
@@ -46,34 +58,26 @@ export class AppComponent {
   goForward() {
     this.location.forward();
   }
-  reLoad(){
+  reLoad() {
     window.location.reload();
     // this.clearSiteCache()
   }
 
-
   ngOnInit(): void {
-    const encodedUserData = localStorage.getItem("encryptedUserData");
+    const encodedUserData = localStorage.getItem('encryptedUserData');
     if (encodedUserData) {
       const userEnc = atob(encodedUserData);
       this.user = JSON.parse(userEnc);
 
       if (this.user) {
-        window.removeEventListener("beforeunload", () => {
+        window.removeEventListener('beforeunload', () => {
           this.authService.SignOut();
         });
       }
-
+    }
   }
-}
-
 
   scrollTop(event: any) {
     window.scrollTo({ top: 0, behavior: 'auto' });
-
   }
-
-
-
-  
 }

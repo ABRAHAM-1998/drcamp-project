@@ -16,7 +16,7 @@ import { getStorage, provideStorage } from '@angular/fire/storage';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { CommonModule, DatePipe } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
+import { MatButtonModule, MatIconButton } from '@angular/material/button';
 import { MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatCommonModule, MatDateFormats, provideNativeDateAdapter } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -29,7 +29,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { CampSupervisorComponent } from './ADMIN/camp-supervisor/camp-supervisor.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
-
+import { MatIconModule } from '@angular/material/icon';
 export const MY_DATE_FORMATS: MatDateFormats = {
   parse: {
     dateInput: 'YYYY-MM-DD', // Correct format for parsing (Year-Month-Day)
@@ -77,7 +77,9 @@ export const MY_DATE_FORMATS: MatDateFormats = {
     MatSnackBarModule,
     MatDatepickerModule,
     MatButtonToggleModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
   ],
   providers: [
     DatePipe,
