@@ -52,7 +52,6 @@ export class UserHomeComponent implements OnInit {
     console.log(this.state);
     this.loadMessages();
     this.loadCamps();
-    this.loadCampMessages();
     this.loadServiceRequests();
     this.loadCampStatus()
   }
@@ -95,6 +94,7 @@ export class UserHomeComponent implements OnInit {
         this.loadUsers();
         this.loadCampStatus();
         this.loadServiceRequests();
+        this.loadCampMessages();
       // } else {
       //   this.router.navigate(['/login']);
       // }
@@ -182,15 +182,6 @@ addNewCamp() {
 
 
 
-loadCampMessages() {
-  if (!this.selectedCamp) return;
-  
-  this.firestore.collection('campMessages', ref => ref.where('campId', '==', this.selectedCamp))
-    .get().subscribe(snapshot => {
-      this.campMessages = snapshot.docs.map(doc => doc.data());
-  });
-}
-
 sendCampMessage() {
   if (!this.selectedCamp || !this.campMessage.trim()) {
     this.snackBar.open('Please select a camp and enter a message.', 'Close', { duration: 3000 });
@@ -224,7 +215,9 @@ sendCampMessage() {
     description: '',
     contact: '',
     status: 'Pending',
-    timestamp: new Date()
+    timestamp: new Date(),
+    campId:'',
+    id:''
   };
 
 
@@ -237,6 +230,10 @@ sendCampMessage() {
       alert("Please fill in all required fields.");
       return;
     }
+    console.log(this.state)
+    this.report.campId =this.state['campId']
+    this.report.id =this.state['id']
+
 
     this.firestore.collection('incidentReports').add(this.report)
       .then(() => {
@@ -256,7 +253,9 @@ sendCampMessage() {
       description: '',
       contact: '',
       status: 'Pending',
-      timestamp: new Date()
+      timestamp: new Date(),
+      campId: '',
+      id:''
     };
   }
 
@@ -286,6 +285,15 @@ sendCampMessage() {
       .catch(error => {
         console.error('Error sending message:', error);
       });
+  }
+
+  loadCampMessages() {
+    if (! this.state['campId']) return;
+    
+    this.firestore.collection('campMessages', ref => ref.where('campId', '==',  this.state['campId']))
+      .get().subscribe(snapshot => {
+        this.campMessages = snapshot.docs.map(doc => doc.data());
+    });
   }
 
 }

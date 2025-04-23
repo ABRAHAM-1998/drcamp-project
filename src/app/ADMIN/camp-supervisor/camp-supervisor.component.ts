@@ -25,6 +25,7 @@ export class CampSupervisorComponent implements OnInit {
   camps: any[] = [];  // Array to hold all camp details
   campMembers: any[]=[];
   userMessages: any[]=[];
+  incidentReports: any[] =[];
 
   constructor(
     private afAuth: AuthService,
@@ -56,6 +57,7 @@ export class CampSupervisorComponent implements OnInit {
         this.loadCampMembers();
         this.loadServiceRequests();
         this.loadUserMessages()
+        this.loadIncidentReports();
       // } else {
       //   this.router.navigate(['/login']);
       // }
@@ -201,15 +203,19 @@ addNewCamp() {
   this.router.navigate(['/add-camp']); // Redirects to the camp creation page
 }
 
-
 loadCampMessages() {
-  if (!this.user.campId) return;
-  
+  if (!this.user?.campId) return;
+
   this.firestore.collection('campMessages', ref => ref.where('campId', '==', this.user.campId))
-    .get().subscribe(snapshot => {
-      this.campMessages = snapshot.docs.map(doc => doc.data());
-  });
+    .snapshotChanges() // Use snapshotChanges to get document IDs
+    .subscribe(snapshot => {
+      this.campMessages = snapshot.map(doc => ({
+        id: doc.payload.doc.id, // Extract document ID
+        ...doc.payload.doc.data() as any
+      }));
+    });
 }
+
 
 sendCampMessage() {
   if (!this.campMessage.trim()) {
@@ -335,5 +341,27 @@ updateDoctorAvailability(doctor: any) {
   });
 }
 
+
+loadIncidentReports() {
+  this.firestore.collection('incidentReports', ref => 
+      ref.where('campId', '==', this.user.campId).orderBy('timestamp', 'desc'))
+    .valueChanges()
+    .subscribe((reports: any[]) => {
+      this.incidentReports = reports;
+    });
+}
+
+deleteMessage(messageId: string) {
+  if (confirm("Are you sure you want to delete this message?")) {
+    this.firestore.collection('campMessages').doc(messageId).delete()
+      .then(() => {
+        alert("Message deleted successfully.");
+      })
+      .catch(error => {
+        console.error("Error deleting message: ", error);
+        alert("Failed to delete the message.");
+      });
+  }
+}
 
 }

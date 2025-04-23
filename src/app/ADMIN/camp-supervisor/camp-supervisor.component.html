@@ -34,6 +34,9 @@
         <li class="nav-item">
             <a class="nav-link" data-bs-toggle="tab" href="#camp">Camp Announcement</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#incidentReports">Incident Reports</a>
+        </li>
 
     </ul>
 
@@ -398,7 +401,7 @@
                     </tbody>
                 </table>
             </div>
-            
+
 
             <!-- Assign Medical Assistance -->
             <div class="card p-3 mt-3">
@@ -459,34 +462,71 @@
             <h4>Reports & Analytics</h4>
             <p>Generate reports on resource usage and service requests.</p>
         </div>
-    </div>
-    <div class="tab-pane fade" id="camp">
-        <h4>Camp Message</h4>
+        <div class="tab-pane fade" id="camp">
+            <h4>Camp Message</h4>
 
-        <h5>📢 Send Announcement to Camp</h5>
+            <h5>📢 Send Announcement to Camp</h5>
 
-        <textarea class="form-control mb-2" [(ngModel)]="campMessage" placeholder="Enter announcement..."
-            rows="3"></textarea>
+            <textarea class="form-control mb-2" [(ngModel)]="campMessage" placeholder="Enter announcement..."
+                rows="3"></textarea>
 
-        <button class="btn btn-success" (click)="sendCampMessage()">📨 Send Message</button>
+            <button class="btn btn-success" (click)="sendCampMessage()">📨 Send Message</button>
 
-        <!-- Camp Announcements -->
-        <h5 class="mt-3">📌 Camp Announcements</h5>
-
-        <div *ngIf="campMessages.length > 0; else noAnnouncements">
-            <ul class="list-group mt-2">
-                <li class="list-group-item d-flex justify-content-between align-items-center"
-                    *ngFor="let msg of campMessages">
-                    <span>📝 {{ msg.message }}</span>
-                    <small class="text-muted">{{ msg.timestamp?.toDate() | date:'short' }}</small>
-                </li>
-            </ul>
+            <!-- Camp Announcements -->
+            <h5 class="mt-3">📌 Camp Announcements</h5>
+            <div *ngIf="campMessages.length > 0; else noAnnouncements">
+                <ul class="list-group mt-2">
+                    <li class="list-group-item d-flex justify-content-between align-items-center"
+                        *ngFor="let msg of campMessages">
+                        <span>📝 {{ msg.message }}</span>
+                        <small class="text-muted">{{ msg.timestamp?.toDate() | date:'short' }}</small>
+            
+                        <!-- Delete Button -->
+                        <span (click)="deleteMessage(msg.id)">
+                            🗑️ Delete
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            
+            <ng-template #noAnnouncements>
+                <div class="alert alert-info text-center mt-2">No announcements available.</div>
+            </ng-template>
+            
         </div>
 
-        <ng-template #noAnnouncements>
-            <div class="alert alert-info text-center mt-2">No announcements available.</div>
-        </ng-template>
+        <div class="tab-pane fade" id="incidentReports">
+            <h4>🚨 Incident Reports</h4>
+
+            <div *ngIf="incidentReports.length > 0; else noReports">
+                <div class="table-responsive">
+                    <table class="table table-bordered text-center">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Contact</th>
+                                <th>Timestamp</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let report of incidentReports">
+                                <td>{{ report.type }}   <br> {{ report.name }}</td>
+                                <td> {{ report.description }}</td>
+                                <td>{{ report.contact }}</td>
+                                <td>{{ report.timestamp?.toDate() | date:'medium' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <ng-template #noReports>
+                <p>No incident reports available.</p>
+            </ng-template>
+        </div>
     </div>
+
 
 
 </div>
