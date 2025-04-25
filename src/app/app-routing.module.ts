@@ -15,7 +15,7 @@ const routes: Routes = [
   {path:'userHome',component:UserHomeComponent},
   {path:'', redirectTo:'login', pathMatch:'full'},
   {path:'add-camp',component:AddCampComponent,canActivate:[AuthGuard]},
-  {path:'add-member', component:AddmemberComponent,canActivate:[AuthGuard]},
+  {path:'add-member', component:AddmemberComponent},
   {path:'admin-home', component:AdminHomeComponent,canActivate:[AuthGuard]},
   {path:'camp-supervisor', component:CampSupervisorComponent,canActivate:[AuthGuard]},
 
